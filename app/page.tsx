@@ -1,95 +1,134 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+async function getData() {
+  // const res = await fetch('https://api.weather.yandex.ru/v2/informers?&X-Yandex-API-Key=9e13767e-c4fa-4e22-8203-3dfb4942eeb3');
+const key = '9e13767e-c4fa-4e22-8203-3dfb4942eeb3';
+const url = 'https://api.weather.yandex.ru/v2/forecast?lat=51.442398&lon=36.11241&extra=false&limit=1'
+ const res = await fetch(url,{
+    headers:{ 'X-Yandex-API-Key': key}
+ })
+  return res.json();
+}
 
-export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+ 
+export default async function Home() {
+  const data = await getData();
+  // console.log(data);
+  let pogoda;
+  switch(data.fact.condition){
+    case 'clear':
+       pogoda = 'Ясно' 
+       break;
+    case 'partly-cloudy':
+      pogoda = 'Малооблачно'
+      break;
+    case 'cloudy':
+      pogoda = 'Облачно с прояснениями'
+      break;
+    case 'overcast':
+      pogoda = 'Пасмурно'
+       break;
+    case 'drizzle':
+       pogoda = 'Морось'
+       break;
+    case 'light-rain':
+      pogoda = 'Небольшой дождь'
+      break;
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+    case 'rain':
+      pogoda = 'Дождь'
+      break;
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
+    case 'moderate-rain':
+      pogoda = 'Умеренно сильный дождь'
+      break;
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    case 'heavy-rain':
+      pogoda = 'Сильный дождь'
+      break;
+
+    case 'continuous-heavy-rain':
+      pogoda = 'Длительный сильный дождь'
+      break;
+
+    case 'showers':
+      pogoda = 'Ливень'
+      break;
+
+    case 'wet-snow':
+      pogoda = 'Дождь со снегом'
+      break;
+
+    case 'light-snow':
+      pogoda = 'Небольшой снег'
+      break;
+
+    case 'snow':
+      pogoda = 'Снег'
+      break;
+
+    case 'snow-showers':
+      pogoda = 'Снегопад'
+      break;
+
+    case 'hail':
+      pogoda = 'Град'
+      break;
+    
+    case 'thunderstorm':
+      pogoda = 'Гроза'
+      break;
+
+    case 'thunderstorm-with-rain':
+      pogoda = 'Дождь с грозой'
+      break;
+
+    case 'thunderstorm-with-hail':
+      pogoda = 'Гроза с градом'
+      break;
+    }
+
+    let naprovlenie;
+    switch (data.fact.wind_dir) {
+    case 'n':
+      naprovlenie = 'Северное'
+      break;
+    case 'ne':
+      naprovlenie = 'Северо-восточное'
+      break;
+    case 'nw':
+      naprovlenie = 'Северо-заподное'
+      break;
+    case 'e':
+      naprovlenie = 'Восточное'
+      break;
+    case 'se':
+      naprovlenie = 'Юго-Восточное'
+      break;
+    case 's':
+      naprovlenie = 'Южное'
+      break;
+    case 'sw':
+      naprovlenie = 'Юго-заподное'
+      break;
+    case 'w':
+      naprovlenie = 'Заподное'
+      break;
+    case 'c':
+      naprovlenie = 'Штиль'
+      break;
+    }
+
+
+  return <main>
+    <h3>{data.geo_object.province.name}</h3>
+    <div className="column">
+      <div>Температура: <b>{data.fact.temp}</b></div>
+      <div>Ощущается: <b>{data.fact.feels_like}</b></div>
+      <div>Погода: <b>{pogoda}</b></div>
+      <div>Скорость ветра в секунду: <b>{data.fact.wind_speed}</b></div>
+      <div>Направление ветра: <b>{naprovlenie}</b></div>
+      <div>Давление в мм. рт. ст.: <b>{data.fact.pressure_mm}</b></div>
+    </div>
+  </main>;
 }
