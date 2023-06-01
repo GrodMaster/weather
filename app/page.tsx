@@ -1,7 +1,7 @@
 async function getData() {
   // const res = await fetch('https://api.weather.yandex.ru/v2/informers?&X-Yandex-API-Key=9e13767e-c4fa-4e22-8203-3dfb4942eeb3');
 const key = '9e13767e-c4fa-4e22-8203-3dfb4942eeb3';
-const url = 'https://api.weather.yandex.ru/v2/forecast?lat=51.442398&lon=36.11241&extra=false&limit=1'
+let url = 'https://api.weather.yandex.ru/v2/forecast?lat=51.442398&lon=36.11241&extra=false&limit=1'
  const res = await fetch(url,{
     headers:{ 'X-Yandex-API-Key': key}
  })
@@ -12,6 +12,7 @@ const url = 'https://api.weather.yandex.ru/v2/forecast?lat=51.442398&lon=36.1124
 
  
 export default async function Home() {
+
   const data = await getData();
   // console.log(data);
   let pogoda;
@@ -119,10 +120,26 @@ export default async function Home() {
       break;
     }
 
+    function setCoordinates(number: number) : string {
+    
+      return switch(number)
+      {
+   1:'',
+   _:''
+      }
+    }
+
 
   return <main>
     <h3>{data.geo_object.province.name}</h3>
     <div className="column">
+      <select id="id" onChange={()=>{
+        
+      }}>
+        <option value={}>1</option>
+        <option>2</option>
+        <option>3</option>
+      </select>
       <div>Температура: <b>{data.fact.temp}</b></div>
       <div>Ощущается: <b>{data.fact.feels_like}</b></div>
       <div>Погода: <b>{pogoda}</b></div>
